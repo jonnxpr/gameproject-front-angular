@@ -1,0 +1,56 @@
+<div
+  class="sidebar"
+  [ngClass]="{ expanded: isExpanded }"
+  (mouseover)="expandSidebar()"
+  (mouseout)="collapseSidebar()"
+>
+  <div class="sidebar-header">
+    <div class="user-photo">
+      <img
+        src="https://cdn-icons-png.flaticon.com/512/2780/2780137.png"
+        alt="Logo"
+        width="32"
+        height="32"
+        class="rounded-circle me-2"
+      />
+    </div>
+    <span *ngIf="isExpanded">Gamepedia</span>
+  </div>
+
+  <ul class="sidebar-menu">
+    <li *ngFor="let item of menuItems">
+      <a href="#" class="menu-item">
+        <i
+          class="feather-icon"
+          [attr.data-feather]="item.icon"
+          style="margin-right: 10px"
+        ></i>
+        <span *ngIf="isExpanded">{{ item.label }}</span>
+      </a>
+    </li>
+  </ul>
+
+  <!-- <div class="sidebar-footer" (click)="toggleUserMenu()">
+    <div class="user-photo">
+      <img
+        src="https://github.com/mdo.png"
+        alt="User Photo"
+        width="32"
+        height="32"
+        class="rounded-circle me-2"
+      />
+    </div>
+    <div class="user-menu">
+      <ul>
+        <li>
+          <a href="#"> <i class="bi bi-person menu-icon"></i> Profile </a>
+        </li>
+        <li>
+          <a href="#">
+            <i class="bi bi-box-arrow-right menu-icon"></i> Logout
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div> -->
+</div>
