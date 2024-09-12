@@ -1,9 +1,10 @@
 
 import { NgModule } from "@angular/core";
+import { AutofocusDirective } from "./autofocus.directive";
 
 @NgModule({
-  declarations: [],
-  exports: []
+  declarations: [AutofocusDirective],
+  exports: [AutofocusDirective]
 })
 
 export class CoreDirectivesModule { }

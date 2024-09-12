@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from "./header/header.component";
 import { MenuItem } from './models/menu-item.model';
@@ -12,12 +12,15 @@ import { SidebarComponent } from "./sidebar/sidebar.component";
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   isExpandedSidebar = false;
   menuItemSelected!: MenuItem;
 
+  ngOnInit() {
+    this.menuItemSelected = { id: 0, label: 'Home', icon: 'home', routerLink: '' };
+  }
+
   receiveIsExpandedSidebar($event: boolean) {
-    console.log("isExpandedSidebar", $event);
     this.isExpandedSidebar = $event;
   }
 

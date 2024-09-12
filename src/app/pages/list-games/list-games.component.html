@@ -1,3 +1,8 @@
+<div
+  id="toast-container"
+  style="position: fixed; top: 10px; right: 10px; z-index: 1000"
+></div>
+
 <div class="row" style="margin: 30px">
   <div class="input-group mt-2">
     <span class="input-group-text" id="basic-addon1">
@@ -27,6 +32,24 @@
       [columns]="columns"
       (activate)="onActivate()"
     >
+      <ng-template ngx-datatable-cell-template let-row="row" #actionColumn>
+        <button
+          style="background-color: transparent; border: none"
+          class="btn"
+          style="
+            --bs-btn-padding-y: 0.4rem;
+            --bs-btn-padding-x: 0.4rem;
+            --bs-btn-font-size: 0.75rem;
+          "
+          (click)="openModal(row)"
+        >
+          <i
+            class="feather-icon"
+            style="width: 20px; height: 20px; color: blue"
+            [attr.data-feather]="'edit'"
+          ></i>
+        </button>
+      </ng-template>
     </ngx-datatable>
   </div>
 </div>

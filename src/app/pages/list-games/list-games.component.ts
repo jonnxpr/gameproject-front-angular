@@ -1,9 +1,15 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, OnDestroy, ViewChild } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, Inject, OnDestroy, PLATFORM_ID, TemplateRef, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ColumnMode, DatatableComponent, NgxDatatableModule, SelectionType, TableColumn } from '@swimlane/ngx-datatable';
+import feather from 'feather-icons';
+import moment from 'moment';
 import { Subject, takeUntil } from 'rxjs';
 import { GameService } from '../../../services/game.service';
+import { ToastService } from '../../../services/toast.service';
 import { Game } from '../../models/game.model';
+import { ModalEditGameComponent } from './modal-edit-game/modal-edit-game.component';
 
 @Component({
   selector: 'app-list-games',
@@ -20,6 +26,7 @@ export class ListGamesComponent implements OnDestroy {
   games: Game[] = [];
   SelectionType = SelectionType.checkbox;
   columns: TableColumn[] = [];
+  @ViewChild('actionColumn', { static: true }) actionColumn!: TemplateRef<any>;
   selected: Game[] = [];
   allSelected: boolean = false;
   selectionType = SelectionType.checkbox;
@@ -29,12 +36,13 @@ export class ListGamesComponent implements OnDestroy {
   filterTerm = '';
   columnMode = ColumnMode.force
 
-  constructor(private gameService: GameService) {
+  constructor(private gameService: GameService, private modalService: NgbModal, private toastService: ToastService, @Inject(PLATFORM_ID) private platformId: Object,) {
   }
 
   ngOnInit(): void {
     this.setColumns();
     this.loadGames();
+
   }
 
   ngAfterViewInit(): void {
@@ -44,14 +52,20 @@ export class ListGamesComponent implements OnDestroy {
     }
   }
 
+  ngAfterViewChecked(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      feather.replace();
+    }
+  }
+
   setColumns() {
     this.columns = [
-      { prop: 'select', name: '', checkboxable: true, headerCheckboxable: true, width: 1, sortable: false },
-      // { prop: 'id', name: 'ID', width: 100 },
-      { prop: 'name', name: 'Name', width: 400 },
+      { prop: 'select', name: '', checkboxable: true, headerCheckboxable: true, width: 10, sortable: false },
+      { prop: 'actions', name: 'Actions', sortable: false, cellTemplate: this.actionColumn, width: 100 },
+      { prop: 'name', name: 'Name', width: 270 },
       { prop: 'genre', name: 'Genre', width: 200 },
       { prop: 'platform', name: 'Platform', width: 200 },
-      { prop: 'releaseDate', name: 'Release Date', width: 200 },
+      { prop: 'releaseDate', name: 'Release Date', width: 200, sortable: true, comparator: (a: string, b: string) => moment(a, "DD/MM/YYYY").toDate().getTime() - moment(b, "DD/MM/YYYY").toDate().getTime() },
       { prop: 'company', name: 'Company', width: 200 },
       { prop: 'description', name: 'Description', cellClass: 'break-word', width: 800 }
     ];
@@ -67,7 +81,6 @@ export class ListGamesComponent implements OnDestroy {
       next: (games) => {
         this.games = games;
         this.filteredGames = [...games];
-
       },
       error: () => {
         window.alert("Error getting games from api!");
@@ -110,8 +123,13 @@ export class ListGamesComponent implements OnDestroy {
     }
 
     this.gameService.deleteGame(this.selected.map(e => e.id)).pipe(takeUntil(this.unsub$)).subscribe({
-      next: () => {
-        this.loadGames();
+      next: (res) => {
+        if (res) {
+          const { message } = res;
+          this.toastService.showSuccess(message);
+          this.loadGames();
+          this.selected = [];
+        }
       },
       error: () => {
         window.alert("Error deleting game!");
@@ -124,8 +142,13 @@ export class ListGamesComponent implements OnDestroy {
 
   deleteAll() {
     this.gameService.deleteAll().pipe(takeUntil(this.unsub$)).subscribe({
-      next: () => {
-        this.loadGames();
+      next: (res) => {
+        if (res) {
+          const { message } = res;
+          this.toastService.showSuccess(message);
+          this.loadGames();
+          this.selected = [];
+        }
       },
       error: () => {
         window.alert("Error deleting all games!");
@@ -138,14 +161,35 @@ export class ListGamesComponent implements OnDestroy {
 
   populateDatabase() {
     this.gameService.populateDatabase().pipe(takeUntil(this.unsub$)).subscribe({
-      next: () => {
-        this.loadGames();
+      next: (res) => {
+        if (res) {
+          const { message } = res;
+          this.toastService.showSuccess(message);
+          this.loadGames();
+        }
       },
       error: () => {
         window.alert("Error populating database!");
       },
       complete: () => {
         this.clearFilters();
+      }
+    });
+  }
+
+  openModal(row: Game) {
+    const modalRef = this.modalService.open(ModalEditGameComponent, {
+      size: 'lg',
+      centered: true,
+      backdrop: 'static',
+    });
+
+    modalRef.componentInstance.game = row;
+
+    modalRef.result.then((result) => {
+      if (result) {
+        this.toastService.showSuccess(result.message);
+        this.loadGames();
       }
     });
   }

@@ -1,1 +1,108 @@
-<p>register-games works!</p>
+<div
+  id="toast-container"
+  style="position: fixed; top: 10px; right: 10px; z-index: 1000"
+></div>
+<div class="card" [formGroup]="form" style="margin: 10px; margin-top: 0">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-12">
+        <h2 class="text-black text-center">Register Games</h2>
+      </div>
+      <div class="col-12 mb-3">
+        <label for="name" class="form-label">Name</label>
+        <input
+          type="text"
+          class="form-control"
+          id="name"
+          formControlName="name"
+          maxlength="250"
+          minlength="1"
+          appAutofocus
+          [ngClass]="{
+            'is-invalid': form.get('name')?.invalid && form.get('name')?.touched
+          }"
+        />
+      </div>
+    </div>
+    <div class="col-12 mb-3">
+      <label for="description" class="form-label">Description</label>
+      <textarea
+        class="form-control"
+        id="description"
+        formControlName="description"
+        maxlength="2000"
+        minlength="1"
+        [ngClass]="{
+          'is-invalid':
+            form.get('description')?.invalid && form.get('description')?.touched
+        }"
+      ></textarea>
+    </div>
+    <div class="col-12 mb-3">
+      <label for="genre" class="form-label">Genre</label>
+      <input
+        type="text"
+        class="form-control"
+        id="genre"
+        formControlName="genre"
+        maxlength="250"
+        minlength="1"
+        [ngClass]="{
+          'is-invalid': form.get('genre')?.invalid && form.get('genre')?.touched
+        }"
+      />
+    </div>
+    <div class="col-12 mb-3">
+      <label for="releaseDate" class="form-label">Release Date</label>
+      <input
+        type="date"
+        class="form-control"
+        id="releaseDate"
+        formControlName="releaseDate"
+        [ngClass]="{
+          'is-invalid':
+            form.get('releaseDate')?.invalid && form.get('releaseDate')?.touched
+        }"
+      />
+    </div>
+    <div class="col-12 mb-3">
+      <label for="platform" class="form-label">Platform</label>
+      <input
+        type="text"
+        class="form-control"
+        id="platform"
+        formControlName="platform"
+        maxlength="250"
+        minlength="1"
+        [ngClass]="{
+          'is-invalid':
+            form.get('platform')?.invalid && form.get('platform')?.touched
+        }"
+      />
+    </div>
+    <div class="col-12 mb-3">
+      <label for="company" class="form-label">Company</label>
+      <input
+        type="text"
+        class="form-control"
+        id="company"
+        formControlName="company"
+        maxlength="250"
+        minlength="1"
+        [ngClass]="{
+          'is-invalid':
+            form.get('company')?.invalid && form.get('company')?.touched
+        }"
+      />
+    </div>
+    <div class="col-12" style="display: flex; justify-content: center">
+      <button
+        class="btn btn-primary"
+        (click)="saveGame()"
+        [disabled]="form.invalid"
+      >
+        Save Game
+      </button>
+    </div>
+  </div>
+</div>

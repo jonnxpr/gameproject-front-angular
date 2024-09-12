@@ -2,7 +2,7 @@
 const env = {
   dev: {
     BACK_PROTOCOL: 'http',
-    GAME_PROJECT: 'localhost:8080/game',
+    GAME_PROJECT: 'localhost:8080/api/gamepedia',
   }
 }
 
@@ -12,5 +12,6 @@ export const endpoints = {
     deleteGame: `${env.dev.BACK_PROTOCOL}://${env.dev.GAME_PROJECT}/delete-by-id`,
     deleteAll: `${env.dev.BACK_PROTOCOL}://${env.dev.GAME_PROJECT}/delete-all`,
     populateDatabase: `${env.dev.BACK_PROTOCOL}://${env.dev.GAME_PROJECT}/populate-database`,
+    saveGame: `${env.dev.BACK_PROTOCOL}://${env.dev.GAME_PROJECT}/save`
   }
 }
