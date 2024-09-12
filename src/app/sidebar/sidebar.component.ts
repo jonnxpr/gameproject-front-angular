@@ -16,6 +16,7 @@ export class SidebarComponent implements AfterViewInit {
   showUserMenu = false;
 
   @Output() isExpandedSidebar = new EventEmitter<boolean>();
+  @Output() menuItemSelected = new EventEmitter<MenuItem>();
 
   menuItems: MenuItem[] = [
     { id: 0, label: 'Home', icon: 'home', routerLink: '' },
@@ -38,10 +39,12 @@ export class SidebarComponent implements AfterViewInit {
 
   expandSidebar() {
     this.isExpanded = true;
+    this.emitIsExpandedSidebar();
   }
 
   collapseSidebar() {
     this.isExpanded = false;
+    this.emitIsExpandedSidebar();
   }
 
   toggleUserMenu() {
@@ -50,5 +53,9 @@ export class SidebarComponent implements AfterViewInit {
 
   emitIsExpandedSidebar() {
     this.isExpandedSidebar.emit(this.isExpanded);
+  }
+
+  emitMenuItemSelected(menuItem: MenuItem) {
+    this.menuItemSelected.emit(menuItem);
   }
 }

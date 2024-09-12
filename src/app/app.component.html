@@ -1,11 +1,26 @@
 <app-sidebar
   class="sidebar"
   (isExpandedSidebar)="receiveIsExpandedSidebar($event)"
+  (menuItemSelected)="receiveMenuItemSelected($event)"
 ></app-sidebar>
+
+<app-header
+  *ngIf="menuItemSelected != null && menuItemSelected?.id !== 0"
+  [title]="menuItemSelected || { id: 0, label: 'Home' }"
+  [itemMenu]="menuItemSelected"
+  [ngClass]="
+    isExpandedSidebar
+      ? 'adjustLabelBreadcumbExpanded'
+      : 'adjustLabelBreadcumbCollapsed'
+  "
+></app-header>
+
 <div
   class="content"
   [ngStyle]="{
     'padding-left': isExpandedSidebar ? '250px' : '80px',
+    'margin-top':
+      menuItemSelected != null && menuItemSelected?.id === 0 ? '50px' : '50px'
   }"
 >
   <div class="router-outlet-container">

@@ -66,7 +66,8 @@ export class ListGamesComponent implements OnDestroy {
     this.gameService.getGames().pipe(takeUntil(this.unsub$)).subscribe({
       next: (games) => {
         this.games = games;
-        this.filteredGames = games;
+        this.filteredGames = [...games];
+
       },
       error: () => {
         window.alert("Error getting games from api!");
@@ -76,6 +77,14 @@ export class ListGamesComponent implements OnDestroy {
 
   onSelect(event: { selected: Game[] }) {
     this.selected = event.selected;
+  }
+
+  onActivate() {
+    if (this.filteredGames.length === this.games.length) {
+      this.filteredGames = [...this.games];
+    } else {
+      this.filteredGames = [...this.filteredGames];
+    }
   }
 
   onFilterChange() {

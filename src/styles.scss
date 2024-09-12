@@ -40,3 +40,15 @@
 .ngx-datatable.material .datatable-body-cell {
   white-space: normal !important;
 }
+
+.adjustLabelBreadcumbExpanded {
+  nav {
+    margin-left: 250px;
+  }
+}
+
+.adjustLabelBreadcumbCollapsed {
+  nav {
+    margin-left: 80px;
+  }
+}

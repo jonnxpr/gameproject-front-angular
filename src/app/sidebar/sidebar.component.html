@@ -20,8 +20,8 @@
   <ul class="sidebar-menu">
     <li *ngFor="let item of menuItems">
       <a
+        (click)="emitMenuItemSelected(item)"
         [routerLink]="[item.routerLink]"
-        routerLinkActive="router-link-active"
         routerLinkActive="router-link-active"
         class="menu-item"
       >
