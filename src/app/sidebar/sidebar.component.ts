@@ -1,11 +1,13 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { AfterViewInit, Component, Inject, PLATFORM_ID, Renderer2 } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Inject, Output, PLATFORM_ID, Renderer2 } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import feather from 'feather-icons';
+import { MenuItem } from '../models/menu-item.model';
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.scss'
 })
@@ -13,11 +15,12 @@ export class SidebarComponent implements AfterViewInit {
   isExpanded = false;
   showUserMenu = false;
 
-  menuItems = [
-    { label: 'Listar Jogos', icon: 'list' },
-    { label: 'Cadastrar Jogos', icon: 'file-plus' },
-    // { label: 'Profile', icon: 'home' },
-    // { label: 'Settings', icon: 'home' },
+  @Output() isExpandedSidebar = new EventEmitter<boolean>();
+
+  menuItems: MenuItem[] = [
+    { id: 0, label: 'Home', icon: 'home', routerLink: '' },
+    { id: 1, label: 'List Games', icon: 'list', routerLink: '/list-games' },
+    { id: 2, label: 'Register Games', icon: 'file-plus', routerLink: '/register-games' },
   ];
 
   constructor(
@@ -43,5 +46,9 @@ export class SidebarComponent implements AfterViewInit {
 
   toggleUserMenu() {
     this.showUserMenu = !this.showUserMenu;
+  }
+
+  emitIsExpandedSidebar() {
+    this.isExpandedSidebar.emit(this.isExpanded);
   }
 }

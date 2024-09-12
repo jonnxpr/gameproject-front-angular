@@ -1,1 +1,42 @@
 @import "bootstrap/scss/bootstrap";
+@import "material-icons/iconfont/material-icons";
+@import "@swimlane/ngx-datatable/index";
+@import "@swimlane/ngx-datatable/themes/material";
+@import "@swimlane/ngx-datatable/assets/icons";
+
+.ngx-datatable.material.single-selection .datatable-body-row.active,
+.ngx-datatable.material.single-selection
+  .datatable-body-row.active
+  .datatable-row-group,
+.ngx-datatable.material.multi-selection .datatable-body-row.active,
+.ngx-datatable.material.multi-selection
+  .datatable-body-row.active
+  .datatable-row-group,
+.ngx-datatable.material.multi-click-selection .datatable-body-row.active,
+.ngx-datatable.material.multi-click-selection
+  .datatable-body-row.active
+  .datatable-row-group {
+  background-color: rgb(253, 102, 102) !important;
+}
+.ngx-datatable.material.single-selection .datatable-body-row.active:hover,
+.ngx-datatable.material.single-selection
+  .datatable-body-row.active:hover
+  .datatable-row-group,
+.ngx-datatable.material.multi-selection .datatable-body-row.active:hover,
+.ngx-datatable.material.multi-selection
+  .datatable-body-row.active:hover
+  .datatable-row-group,
+.ngx-datatable.material.multi-click-selection .datatable-body-row.active:hover,
+.ngx-datatable.material.multi-click-selection
+  .datatable-body-row.active:hover
+  .datatable-row-group {
+  background-color: rgb(253, 102, 102) !important;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.ngx-datatable.material .datatable-body-cell {
+  white-space: normal !important;
+}

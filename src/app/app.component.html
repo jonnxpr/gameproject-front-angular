@@ -1,4 +1,14 @@
-<app-sidebar></app-sidebar>
-<div class="content">
-  <p style="display: flex; justify-content: center">Teste</p>
+<app-sidebar
+  class="sidebar"
+  (isExpandedSidebar)="receiveIsExpandedSidebar($event)"
+></app-sidebar>
+<div
+  class="content"
+  [ngStyle]="{
+    'padding-left': isExpandedSidebar ? '250px' : '80px',
+  }"
+>
+  <div class="router-outlet-container">
+    <router-outlet></router-outlet>
+  </div>
 </div>

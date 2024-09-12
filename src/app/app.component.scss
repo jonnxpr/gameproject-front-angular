@@ -1,0 +1,9 @@
+.sidebar {
+  position: relative;
+  z-index: 10; /* Valor maior para garantir que esteja à frente */
+}
+
+.content {
+  position: relative;
+  z-index: 1; /* Valor menor para garantir que esteja atrás */
+}

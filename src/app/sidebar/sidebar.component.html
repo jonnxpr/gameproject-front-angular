@@ -19,7 +19,12 @@
 
   <ul class="sidebar-menu">
     <li *ngFor="let item of menuItems">
-      <a href="#" class="menu-item">
+      <a
+        [routerLink]="[item.routerLink]"
+        routerLinkActive="router-link-active"
+        routerLinkActive="router-link-active"
+        class="menu-item"
+      >
         <i
           class="feather-icon"
           [attr.data-feather]="item.icon"

@@ -1,0 +1,54 @@
+<div class="row" style="margin: 30px">
+  <div class="input-group mt-2">
+    <span class="input-group-text" id="basic-addon1">
+      <i class="feather-icon" [attr.data-feather]="'search'"></i>
+    </span>
+    <input
+      class="form-control"
+      type="text"
+      placeholder="Filter games"
+      [(ngModel)]="filterTerm"
+      (input)="onFilterChange()"
+    />
+  </div>
+
+  <div class="col-12" style="margin-top: 10px">
+    <ngx-datatable
+      class="material"
+      [headerHeight]="40"
+      [footerHeight]="40"
+      [rowHeight]="100"
+      [limit]="pageSize"
+      [scrollbarH]="true"
+      [selectionType]="selectionType"
+      [selected]="selected"
+      (select)="onSelect($event)"
+      [rows]="filteredGames"
+      [columns]="columns"
+    >
+    </ngx-datatable>
+  </div>
+</div>
+
+<!-- criar botão para excluir os registros selecionados, e outro botão para excluir todos os registros -->
+<div class="row" style="margin: 30px">
+  <div class="col-12" style="display: flex; justify-content: flex-end">
+    <button class="btn btn-primary" (click)="populateDatabase()">
+      Populate Database
+    </button>
+    <button
+      class="btn btn-danger ms-2"
+      [disabled]="selected.length === 0"
+      (click)="deleteSelected()"
+    >
+      Delete selected
+    </button>
+    <button
+      class="btn btn-danger ms-2"
+      (click)="deleteAll()"
+      [disabled]="games.length === 0"
+    >
+      Delete all
+    </button>
+  </div>
+</div>
