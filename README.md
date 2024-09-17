@@ -1,4 +1,4 @@
-# Projeto Gamepedia - Backend
+# Projeto Gamepedia - Frontend
 
 Projeto desenvolvido para estudo de Angular 18 + Spring Boot + MySQL
 
