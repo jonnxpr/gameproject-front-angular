@@ -42,7 +42,6 @@ export class ListGamesComponent implements OnDestroy {
   ngOnInit(): void {
     this.setColumns();
     this.loadGames();
-
   }
 
   ngAfterViewInit(): void {
@@ -58,6 +57,9 @@ export class ListGamesComponent implements OnDestroy {
     }
   }
 
+  /**
+   * Define as colunas da tabela.
+   */
   setColumns() {
     this.columns = [
       { prop: 'select', name: '', checkboxable: true, headerCheckboxable: true, width: 10, sortable: false },
@@ -71,27 +73,39 @@ export class ListGamesComponent implements OnDestroy {
     ];
   }
 
+  /**
+   * Limpa os filtros de busca.
+   */
   clearFilters() {
     this.filterTerm = '';
     this.filteredGames = this.games;
   }
 
+  /**
+   * Carrega os jogos da API.
+   */
   loadGames() {
     this.gameService.getGames().pipe(takeUntil(this.unsub$)).subscribe({
       next: (games) => {
         this.games = games;
         this.filteredGames = [...games];
       },
-      error: () => {
-        window.alert("Error getting games from api!");
+      error: (err) => {
+        this.toastService.showError('Error getting games from api!');
       },
     });
   }
 
+  /**
+   * Evento disparado ao selecionar um jogo.
+   */
   onSelect(event: { selected: Game[] }) {
     this.selected = event.selected;
   }
 
+  /**
+   * Evento disparado ao ativar a tabela.
+   */
   onActivate() {
     if (this.filteredGames.length === this.games.length) {
       this.filteredGames = [...this.games];
@@ -100,6 +114,9 @@ export class ListGamesComponent implements OnDestroy {
     }
   }
 
+  /**
+   * Evento disparado ao alterar o filtro de busca.
+   */
   onFilterChange() {
     const filterTermLower = this.filterTerm.toLowerCase();
 
@@ -117,6 +134,9 @@ export class ListGamesComponent implements OnDestroy {
     }
   }
 
+  /**
+   * Deleta os jogos selecionados.
+   */
   deleteSelected() {
     if (this.selected.length === 0) {
       return;
@@ -131,8 +151,8 @@ export class ListGamesComponent implements OnDestroy {
           this.selected = [];
         }
       },
-      error: () => {
-        window.alert("Error deleting game!");
+      error: (err) => {
+        this.toastService.showError('Error deleting game!');
       },
       complete: () => {
         this.clearFilters();
@@ -140,6 +160,9 @@ export class ListGamesComponent implements OnDestroy {
     });
   }
 
+  /**
+   * Deleta todos os jogos.
+   */
   deleteAll() {
     this.gameService.deleteAll().pipe(takeUntil(this.unsub$)).subscribe({
       next: (res) => {
@@ -150,8 +173,8 @@ export class ListGamesComponent implements OnDestroy {
           this.selected = [];
         }
       },
-      error: () => {
-        window.alert("Error deleting all games!");
+      error: (err) => {
+        this.toastService.showError('Error deleting all games!');
       },
       complete: () => {
         this.clearFilters();
@@ -159,6 +182,9 @@ export class ListGamesComponent implements OnDestroy {
     });
   }
 
+  /**
+   * Popula o banco de dados com dados de exemplo.
+   */
   populateDatabase() {
     this.gameService.populateDatabase().pipe(takeUntil(this.unsub$)).subscribe({
       next: (res) => {
@@ -168,8 +194,8 @@ export class ListGamesComponent implements OnDestroy {
           this.loadGames();
         }
       },
-      error: () => {
-        window.alert("Error populating database!");
+      error: (err) => {
+        this.toastService.showError('Error populating database!');
       },
       complete: () => {
         this.clearFilters();
@@ -177,6 +203,9 @@ export class ListGamesComponent implements OnDestroy {
     });
   }
 
+  /**
+   * Abre o modal de edição de jogo.
+   */
   openModal(row: Game) {
     const modalRef = this.modalService.open(ModalEditGameComponent, {
       size: 'lg',
@@ -191,6 +220,8 @@ export class ListGamesComponent implements OnDestroy {
         this.toastService.showSuccess(result.message);
         this.loadGames();
       }
+    }).catch(err => {
+      this.toastService.showError('Error opening modal!');
     });
   }
 

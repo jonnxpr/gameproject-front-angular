@@ -9,25 +9,37 @@ import { endpoints } from '../enviroments/endpoints';
 export class GameService {
   constructor(private http: HttpClient) { }
 
-  // Método GET para recuperar os jogos
+  /**
+   * Método GET para recuperar os jogos.
+   */
   getGames(): Observable<Game[]> {
     return this.http.get<Game[]>(endpoints.games.findAll);
   }
 
-  // Método POST para adicionar um novo jogo
+  /**
+   * Método POST para adicionar um novo jogo.
+   */
   saveGame(gameData: Game): Observable<Response> {
     return this.http.post<Response>(endpoints.games.saveGame, gameData);
   }
 
-  // Método DELETE para remover um jogo
+  /**
+   * Método DELETE para remover um jogo.
+   */
   deleteGame(ids: number[]): Observable<Response> {
     return this.http.delete<Response>(endpoints.games.deleteGame, { body: ids });
   }
 
+  /**
+   * Método DELETE para remover todos os jogos.
+   */
   deleteAll(): Observable<Response> {
     return this.http.delete<Response>(endpoints.games.deleteAll);
   }
 
+  /**
+   * Método POST para popular o banco de dados com dados de exemplo.
+   */
   populateDatabase(): Observable<Response> {
     return this.http.post<Response>(endpoints.games.populateDatabase, null);
   }

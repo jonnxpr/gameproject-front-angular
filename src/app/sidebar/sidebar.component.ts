@@ -37,24 +37,39 @@ export class SidebarComponent implements AfterViewInit {
     }
   }
 
+  /**
+   * Expande a sidebar.
+   */
   expandSidebar() {
     this.isExpanded = true;
     this.emitIsExpandedSidebar();
   }
 
+  /**
+   * Colapsa a sidebar.
+   */
   collapseSidebar() {
     this.isExpanded = false;
     this.emitIsExpandedSidebar();
   }
 
+  /**
+   * Alterna o menu do usuário.
+   */
   toggleUserMenu() {
     this.showUserMenu = !this.showUserMenu;
   }
 
+  /**
+   * Emite o evento de expansão da sidebar.
+   */
   emitIsExpandedSidebar() {
     this.isExpandedSidebar.emit(this.isExpanded);
   }
 
+  /**
+   * Emite o evento de seleção de item do menu.
+   */
   emitMenuItemSelected(menuItem: MenuItem) {
     this.menuItemSelected.emit(menuItem);
   }

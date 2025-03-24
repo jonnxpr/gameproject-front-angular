@@ -5,7 +5,6 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import moment from 'moment';
-import { NgxMaskDirective } from 'ngx-mask';
 import { CoreDirectivesModule } from '../../../@core/directives/directives.module';
 import { GameService } from '../../../services/game.service';
 import { ToastService } from '../../../services/toast.service';
@@ -14,7 +13,7 @@ import { Game } from '../../models/game.model';
 @Component({
   selector: 'app-register-games',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatDatepickerModule, NgxMaskDirective, CoreDirectivesModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatDatepickerModule, CoreDirectivesModule],
   providers: [GameService],
   templateUrl: './register-games.component.html',
   styleUrl: './register-games.component.scss',
@@ -26,25 +25,19 @@ export class RegisterGamesComponent {
   constructor(private fb: FormBuilder, private gameService: GameService, private toastService: ToastService) { }
 
   ngOnInit(): void {
-
     this.form = this.fb.group({
-
       name: ['', Validators.required],
-
       description: ['', Validators.required],
-
       genre: ['', Validators.required],
-
       releaseDate: [''],
-
       platform: ['', Validators.required],
-
       company: ['', Validators.required]
-
     });
-
   }
 
+  /**
+   * Salva um novo jogo.
+   */
   saveGame(): void {
     let gameParams: Game = this.form.value as Game;
 
@@ -52,11 +45,16 @@ export class RegisterGamesComponent {
       gameParams.releaseDate = moment(gameParams.releaseDate).format('DD/MM/YYYY');
     }
 
-    this.gameService.saveGame(gameParams).subscribe((res) => {
-      if (res) {
-        const { message } = res;
-        this.toastService.showSuccess(message);
-        this.form.reset();
+    this.gameService.saveGame(gameParams).subscribe({
+      next: (res) => {
+        if (res) {
+          const { message } = res;
+          this.toastService.showSuccess(message);
+          this.form.reset();
+        }
+      },
+      error: (err) => {
+        this.toastService.showError('Error saving game!');
       }
     });
   }

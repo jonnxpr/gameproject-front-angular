@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import moment from 'moment';
 import { GameService } from '../../../../services/game.service';
+import { ToastService } from '../../../../services/toast.service';
 import { Game } from '../../../models/game.model';
 
 @Component({
@@ -18,27 +19,22 @@ export class ModalEditGameComponent {
   @Input() game!: Game;
   form!: FormGroup;
 
-  constructor(public activeModal: NgbActiveModal, private fb: FormBuilder, private gameService: GameService) {
-
-  }
+  constructor(public activeModal: NgbActiveModal, private fb: FormBuilder, private gameService: GameService, private toastService: ToastService) { }
 
   ngOnInit() {
     this.createForm();
   }
 
+  /**
+   * Cria o formulário de edição do jogo.
+   */
   createForm() {
     this.form = this.fb.group({
-
       name: ['', Validators.required],
-
       description: ['', Validators.required],
-
       genre: ['', Validators.required],
-
       releaseDate: [''],
-
       platform: ['', Validators.required],
-
       company: ['', Validators.required]
     });
 
@@ -46,10 +42,16 @@ export class ModalEditGameComponent {
     this.game.releaseDate ? this.form.get('releaseDate')?.setValue(moment(this.game.releaseDate, 'DD/MM/YYYY').format('YYYY-MM-DD')) : '';
   }
 
+  /**
+   * Fecha o modal de edição.
+   */
   closeModal() {
     this.activeModal.close();
   }
 
+  /**
+   * Atualiza os dados do jogo.
+   */
   updateGame() {
     let gameParams: Game = this.form.value as Game;
     gameParams.id = this.game.id;
@@ -58,10 +60,15 @@ export class ModalEditGameComponent {
       gameParams.releaseDate = moment(gameParams.releaseDate).format('DD/MM/YYYY');
     }
 
-    this.gameService.saveGame(gameParams).subscribe((res) => {
-      if (res) {
-        const { message } = res;
-        this.activeModal.close({ message: message });
+    this.gameService.saveGame(gameParams).subscribe({
+      next: (res) => {
+        if (res) {
+          const { message } = res;
+          this.activeModal.close({ message: message });
+        }
+      },
+      error: (err) => {
+        this.toastService.showError('Error updating game!');
       }
     });
   }
